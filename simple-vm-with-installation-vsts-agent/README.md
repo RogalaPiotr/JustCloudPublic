@@ -1,6 +1,10 @@
 # simple-vm-with-installation-vsts-agent
 
-This deployment is deploying VM on which is installing automatically VSTS agent and adding this VM to VSTS agent pool. Is also shutting down automatically on 18:00 CET. During deployment you have to add imporntant data for yout VSTS Projetc.
+This deployment is deploying VM on which is installing automatically VSTS agent and adding this VM to VSTS agent pool. Is also shutting down automatically everyday VM on 18:00 CET. During deployment you have to add imporntant data for your VSTS Project.
+
+Deplyment time: 15 minutes 46 seconds
+
+Configuration security token: https://docs.microsoft.com/en-us/vsts/build-release/actions/agents/v2-windows?view=vsts
 
 ## Create a new simple-vm-with-installation-vsts-agent instance
 
