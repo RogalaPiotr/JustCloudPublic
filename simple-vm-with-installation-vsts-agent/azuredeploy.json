@@ -62,6 +62,10 @@
       },
       "tag": {
         "type": "object",
+        "defaultValue": {
+            "key1": "Project",
+            "value1": "VSTSAgent"
+        },
         "metadata": {
             "description": "Tag Values"
         }
