@@ -73,7 +73,7 @@
   },
     "variables": {
       "windowsOSVersion": "2016-Datacenter",
-      "vmsize": "Standard_B1s",
+      "vmsize": "Standard_B2s",
       "publicIPAddressName": "[concat(parameters('vmName'), '-pip')]",
       "virtualNetworkName": "[concat(parameters('vmName'), '-vnet')]",
       "NSGname": "[concat(parameters('vmName'), '-nsg')]",
@@ -82,7 +82,7 @@
       "addressPrefix": "10.0.0.0/16",
       "subnetPrefix": "10.0.0.0/24",
       "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
-      "urldonwloadagent": "https://vstsagentpackage.azureedge.net/agent/2.133.3/vsts-agent-win-x64-2.133.3.zip",
+      "urldonwloadagent": "https://vstsagentpackage.azureedge.net/agent/2.140.2/vsts-agent-win-x64-2.140.2.zip",
       "filescriptURI": "https://raw.githubusercontent.com/RogalaPiotr/JustCloudPublic/master/simple-vm-with-installation-vsts-agent/vstsagent.ps1",
       "filescriptURISplit": "[split(variables('filescriptURI'), '/')]",
       "filescriptName": "[last(variables('filescriptURISplit'))]",
