@@ -86,7 +86,7 @@
       "filescriptURI": "https://raw.githubusercontent.com/RogalaPiotr/JustCloudPublic/master/simple-vm-with-installation-vsts-agent/vstsagent.ps1",
       "filescriptURISplit": "[split(variables('filescriptURI'), '/')]",
       "filescriptName": "[last(variables('filescriptURISplit'))]",
-      "agentname": "[concat(parameters('vmName'), 'agent')]"
+      "agentname": "[parameters('vmName')]"
     },
     "resources": [
       {
