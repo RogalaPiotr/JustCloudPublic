@@ -46,7 +46,7 @@
             "metadata": {
                 "description": "The location of resources, such as templates and DSC modules, that the template depends on"
             },
-            "defaultValue": "https://raw.githubusercontent.com/RogalaPiotr/JustCloudPublic/tree/master/azure-quickstart-templates-active-directory-new-domain-ha-2-dc-progala-mod"
+            "defaultValue": "https://raw.githubusercontent.com/RogalaPiotr/JustCloudPublic/master/azure-quickstart-templates-active-directory-new-domain-ha-2-dc-progala-mod"
         },
         "_artifactsLocationSasToken": {
             "type": "securestring",
