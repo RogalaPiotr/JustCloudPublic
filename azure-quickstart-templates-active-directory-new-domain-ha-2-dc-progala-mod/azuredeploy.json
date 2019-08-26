@@ -141,7 +141,7 @@
                 "PlatformFaultDomainCount": 2
             },
             "sku": {
-                "name": "Aligned"
+                "name": "Classic"
             }
         },
         {
