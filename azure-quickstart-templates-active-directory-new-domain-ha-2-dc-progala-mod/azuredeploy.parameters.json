@@ -13,6 +13,9 @@
         },
         "domainName": {
             "value": "mydomain.local"
+        },
+        "prefix-name": {
+            "value": "prefix"
         }
     }
 }

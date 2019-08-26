@@ -61,6 +61,12 @@
             "metadata": {
                 "description": "Location for all resources."
             }
+        },
+        "prefix-name": {
+            "type": "string",
+            "metadata": {
+                "description": "Prafix name of environment"
+            }
         }
     },
     "variables": {
