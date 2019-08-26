@@ -64,35 +64,34 @@
         }
     },
     "variables": {
-        "storageAccountType": "Premium_LRS",
-        "adPDCVMName": "adPDC",
-        "adBDCVMName": "adBDC",
+        "storageAccountName": "[concat('stor', uniquestring(resourceGroup().id))]",
+        "adPDCVMName": "[concat(parameters('prefix-name'),'-vm-PDC')]",
+        "adBDCVMName": "[concat(parameters('prefix-name'),'-vm-BDC')]",
+        "adAvailabilitySetName": "[concat(parameters('prefix-name'),'-avset')]",
+        "publicIPAddressName": "[concat(parameters('prefix-name'),'-lb-pip')]",
+        "adLBName": "[concat(parameters('prefix-name'),'-lb')]",
+        "virtualNetworkName": "[concat(parameters('prefix-name'),'-vnet')]",
+        "adPDCRDPNAT": "[concat(parameters('prefix-name'),'-rdp-PDC')]",
+        "adBDCRDPNAT": "[concat(parameters('prefix-name'),'-rdp-BDC')]",
+        "adSubnetName": "[concat(parameters('prefix-name'),'-subnet')]",
+        "adBDCNicName": "[concat(parameters('prefix-name'),'-nic-BDC')]",
+        "adPDCNicName": "[concat(parameters('prefix-name'),'-nic-PDC')]",
         "imagePublisher": "MicrosoftWindowsServer",
         "imageOffer": "WindowsServer",
         "imageSKU": "2016-Datacenter",
-        "adAvailabilitySetName": "adAvailabiltySet",
-        "publicIPAddressName": "ad-lb-pip",
         "adVMSize": "Standard_DS2_v2",
         "adLBFE": "LBFE",
         "adLBBE": "LBBE",
-        "adPDCRDPNAT": "adPDCRDP",
-        "adBDCRDPNAT": "adBDCRDP",
-        "virtualNetworkName": "adVNET",
         "virtualNetworkAddressRange": "10.0.0.0/16",
-        "adSubnetName": "adSubnet",
         "adSubnet": "10.0.0.0/24",
-        "adPDCNicName": "adPDCNic",
         "adPDCNicIPAddress": "10.0.0.4",
-        "adBDCNicName": "adBDCNic",
         "adBDCNicIPAddress": "10.0.0.5",
         "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('adSubnetName'))]",
-        "adLBName": "adLoadBalancer",
         "adlbID": "[resourceId('Microsoft.Network/loadBalancers',variables('adLBName'))]",
         "adlbFEConfigID": "[concat(variables('adlbID'),'/frontendIPConfigurations/',variables('adLBFE'))]",
         "adPDCRDPNATRuleID": "[concat(variables('adlbID'),'/inboundNatRules/',variables('adPDCRDPNAT'))]",
         "adBDCRDPNATRuleID": "[concat(variables('adlbID'),'/inboundNatRules/',variables('adBDCRDPNAT'))]",
         "adBEAddressPoolID": "[concat(variables('adlbID'),'/backendAddressPools/',variables('adLBBE'))]",
-        "adDataDiskSize": 1000,
         "vnetTemplateUri": "[concat(parameters('_artifactsLocation'),'/nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken'))]",
         "nicTemplateUri": "[concat(parameters('_artifactsLocation'),'/nestedtemplates/nic.json', parameters('_artifactsLocationSasToken'))]",
         "vnetwithDNSTemplateUri": "[concat(parameters('_artifactsLocation'),'/nestedtemplates/vnet-with-dns-server.json', parameters('_artifactsLocationSasToken'))]",
@@ -105,6 +104,15 @@
         "adBDCConfigurationFunction": "ConfigureADBDC.ps1\\ConfigureADBDC"
     },
     "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('storageAccountName')]",
+            "apiVersion": "2015-06-15",
+            "location": "[resourceGroup().location]",
+            "properties": {
+            "accountType": "Premium_LRS"
+            }
+        },
         {
             "name": "[variables('publicIPAddressName')]",
             "type": "Microsoft.Network/publicIPAddresses",
@@ -307,25 +315,24 @@
                     },
                     "osDisk": {
                         "name": "[concat(variables('adPDCVMName'),'_OSDisk')]",
+                        "vhd": {
+                          "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/vhds/',concat(variables('adPDCVMName'),'_OSDisk'),'.vhd')]"
+                        },
                         "caching": "ReadWrite",
-                        "createOption": "FromImage",
-                        "managedDisk": {
-                            "storageAccountType": "[variables('storageAccountType')]"
-                        }
-                    },
-                    "dataDisks": [
-                        {
-                            "name": "[concat(variables('adPDCVMName'),'_data-disk1')]",
-                            "caching": "None",
-                            "diskSizeGB": "[variables('adDataDiskSize')]",
+                        "createOption": "FromImage"
+                      },
+                      "dataDisks": [
+                          {
+                            "name": "datadisk1",
+                            "diskSizeGB": 512,
                             "lun": 0,
-                            "createOption": "Empty",
-                            "managedDisk": {
-                                "storageAccountType": "[variables('storageAccountType')]"
-                            }
-                        }
-                    ]
-                },
+                            "vhd": {
+                              "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/vhds/',concat(variables('adPDCVMName'),'_data-disk1'),'.vhd')]"
+                            },
+                            "createOption": "Empty"
+                          }
+                        ]
+                    },
                 "networkProfile": {
                     "networkInterfaces": [
                         {
@@ -482,26 +489,25 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "[concat(variables('adBDCVMName'),'_osdisk')]",
+                        "name": "[concat(variables('adBDCVMName'),'_OSDisk')]",
+                        "vhd": {
+                          "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/vhds/',concat(variables('adBDCVMName'),'_OSDisk'),'.vhd')]"
+                        },
                         "caching": "ReadWrite",
-                        "createOption": "FromImage",
-                        "managedDisk": {
-                            "storageAccountType": "[variables('storageAccountType')]"
-                        }
-                    },
-                    "dataDisks": [
-                        {
-                            "name": "[concat(variables('adBDCVMName'),'_data-disk1')]",
-                            "caching": "None",
-                            "diskSizeGB": "[variables('adDataDiskSize')]",
+                        "createOption": "FromImage"
+                      },
+                      "dataDisks": [
+                          {
+                            "name": "datadisk1",
+                            "diskSizeGB": 512,
                             "lun": 0,
-                            "createOption": "Empty",
-                            "managedDisk": {
-                                "storageAccountType": "[variables('storageAccountType')]"
-                            }
-                        }
-                    ]
-                },
+                            "vhd": {
+                              "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/vhds/',concat(variables('adBDCVMName'),'_data-disk1'),'.vhd')]"
+                            },
+                            "createOption": "Empty"
+                          }
+                        ]
+                    },
                 "networkProfile": {
                     "networkInterfaces": [
                         {
