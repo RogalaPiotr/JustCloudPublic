@@ -153,8 +153,7 @@
         "taskType":"ComputeVmShutdownTask",
         "notificationSettings":{
           "status":"Disabled",
-          "timeInMinutes":15,
-          "webhookUrl":null
+          "timeInMinutes":35
         },
         "targetResourceId":"[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]",
         "dailyRecurrence":{
@@ -164,6 +163,18 @@
     }
   ],
   "outputs": {
+    "adminUsername": {
+      "type" : "string",
+      "value": "parameters('adminUsername')"
+    },
+    "adminUsernamePassword": {
+      "type" : "securestring",
+      "value": "parameters('adminUsernamePassword')"
+    },
+    "vmname": {
+      "type" : "string",
+      "value": "parameters('vmname')"
+    },
     "hostname": {
       "type" : "string",
       "value": "[reference(variables('publicIPAddressName')).dnsSettings.fqdn]"
