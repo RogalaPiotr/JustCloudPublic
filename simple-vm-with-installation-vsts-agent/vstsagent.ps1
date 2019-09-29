@@ -14,7 +14,7 @@ Function Install-AzureDevOpsAgents{
         }
         process { 
                 try {
-                    
+
                     # Creating Pool in Azure DevOps
                     $encodedPat = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes( ":$token"))
                     $body = "{name:`"$pool`", autoProvision: `"true`"}"
@@ -36,7 +36,20 @@ Function Install-AzureDevOpsAgents{
 
                     # Install PowerShell module
                     if ($installpowershellaz){
-                        Install-Module -Name Az -Force
+                        try{
+                            Install-PackageProvider -Name "Nuget" -Force
+                        }
+                        catch {
+                            throw $_ 
+                            break
+                        }
+                        try {
+                            Install-Module -Name Az -Force
+                        }
+                        catch {
+                            throw $_ 
+                            break
+                        }
                     }
                 }
                 catch {
