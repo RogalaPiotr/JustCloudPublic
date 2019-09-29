@@ -2,7 +2,7 @@ param(
     [Parameter(Mandatory=$true)][string] $url,
     [Parameter(Mandatory=$true)][string] $urlvsts,
     [Parameter(Mandatory=$false)][string] $auth,
-    [Parameter(Mandatory=$true)][string] $token,
+    [Parameter(Mandatory=$true)][securestring] $token,
     [Parameter(Mandatory=$false)][string] $pool = "default",
     [Parameter(Mandatory=$false)][string] $agentname,
     [Parameter(Mandatory=$false)][ValidateRange(1,20)][int] $numberagents = 1,
