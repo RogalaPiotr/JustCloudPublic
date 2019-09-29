@@ -1,0 +1,37 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUsername": {
+            "value": "pppp"
+        },
+        "adminPassword": {
+            "value": "aAa9jng=B^47AvP"
+        },
+        "vmName": {
+            "value": "testvpm"
+        },
+        "urlvsts": {
+            "value": "https://justcloud.visualstudio.com"
+        },
+        "auth": {
+            "value": "pat"
+        },
+        "token": {
+            "value": "jhlu3jnjtkjujaj76q5owikiur7vzihgb2yg2brsatc4nbx4wceq"
+        },
+        "pool": {
+            "value": "JustCloudAgents"
+        },
+        "AccessIPNSG": {
+            "value": "192.168.1.2"
+        },
+        "numberagents": {
+            "value": 3
+        },        
+        "tag": {
+            "value": "agent"
+        }
+    }
+}
+
