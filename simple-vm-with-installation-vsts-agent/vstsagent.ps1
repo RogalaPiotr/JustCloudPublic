@@ -44,7 +44,7 @@ param(
     [Parameter(Mandatory=$true)][string] $token,
     [Parameter(Mandatory=$false)][string] $pool = "default",
     [Parameter(Mandatory=$false)][string] $agentname,
-    [Parameter(Mandatory=$false)][ValidateRange(1,20)][string] $numberagents = 1,
+    [Parameter(Mandatory=$false)][ValidateRange(1,20)][int] $numberagents = 1,
     [Parameter(Mandatory=$false)][bool] $installpowershellaz = $true
     )
     begin {
@@ -54,9 +54,9 @@ param(
                 # Creating Pool in Azure DevOps
                 $encodedPat = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes( ":$token"))
                 $body = "{name:`"$pool`", autoProvision: `"true`"}"
-                if (!($pool -match "default" -or $pool -match "Azure Pipelines" -or $((Invoke-WebRequest -Method GET -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.1" -Headers @{Authorization = "Basic $encodedPat"}).content | ? { $_ -like "*$pool*"}))){
+                if (!($pool -match "default" -or $pool -match "Azure Pipelines" -or $((Invoke-WebRequest -Method GET -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.1" -UseBasicParsing -Headers @{Authorization = "Basic $encodedPat"}).content | ? { $_ -like "*$pool*"}))){
 
-                    $tmp = $(Invoke-WebRequest -Method POST -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.0-preview.1" -Headers @{Authorization = "Basic $encodedPat"} -Body $body -ContentType "application/json") 2>$null
+                    $tmp = $(Invoke-WebRequest -Method POST -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.0-preview.1" -UseBasicParsing -Headers @{Authorization = "Basic $encodedPat"} -Body $body -ContentType "application/json") 2>$null
                     #(Invoke-WebRequest -Method GET -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.1" -Headers @{Authorization = "Basic $encodedPat"}).content | ? { $_ -like "*$pool*"}
                                    }
 
