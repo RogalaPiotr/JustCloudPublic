@@ -56,7 +56,7 @@ param(
                 $body = "{name:`"$pool`", autoProvision: `"true`"}"
                 if (!($pool -match "default" -or $pool -match "Azure Pipelines" -or $((Invoke-WebRequest -Method GET -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.1" -Headers @{Authorization = "Basic $encodedPat"}).content | ? { $_ -like "*$pool*"}))){
 
-                    $tmp = $(Invoke-WebRequest -Method POST -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.0-preview.1" -Headers @{Authorization = "Basic $encodedPat"} -Body $body -ContentType "application/json" -ErrorAction Ignore)
+                    $tmp = $(Invoke-WebRequest -Method POST -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.0-preview.1" -Headers @{Authorization = "Basic $encodedPat"} -Body $body -ContentType "application/json") 2>$null
                     #(Invoke-WebRequest -Method GET -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.1" -Headers @{Authorization = "Basic $encodedPat"}).content | ? { $_ -like "*$pool*"}
                                    }
 
