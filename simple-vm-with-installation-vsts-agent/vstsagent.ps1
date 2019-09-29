@@ -53,10 +53,12 @@ param(
             try {
                 # Creating Pool in Azure DevOps
                 $encodedPat = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes( ":$token"))
-                $body = "{name:$pool, autoProvision: 'true'}"
-                if (!($pool -match "default" -or $pool -match "Azure Pipelines")){
-                    $tmp = $(Invoke-WebRequest -Method POST -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.0-preview.1" -Headers @{Authorization = "Basic $encodedPat"} -Body $body -ContentType "application/json") 2>$null
-                }
+                $body = "{name:`"$pool`", autoProvision: `"true`"}"
+                if (!($pool -match "default" -or $pool -match "Azure Pipelines" -or $((Invoke-WebRequest -Method GET -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.1" -Headers @{Authorization = "Basic $encodedPat"}).content | ? { $_ -like "*$pool*"}))){
+
+                    $tmp = $(Invoke-WebRequest -Method POST -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.0-preview.1" -Headers @{Authorization = "Basic $encodedPat"} -Body $body -ContentType "application/json" -ErrorAction Ignore)
+                    #(Invoke-WebRequest -Method GET -Uri "$urlvsts/_apis/distributedtask/pools?api-version=5.1" -Headers @{Authorization = "Basic $encodedPat"}).content | ? { $_ -like "*$pool*"}
+                                   }
 
                 # Install agenets
                 $filename = $url.Split('/')[-1]
