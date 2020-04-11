@@ -12,7 +12,6 @@ The template is building in the loop of resources:
 
 ## Create a covid-deployment-nc-vms
 
-
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FRogalaPiotr%2FJustCloudPublic%2Fmaster%2Fcovid-deployment-nc-vms%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
