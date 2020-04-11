@@ -1,0 +1,240 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "User login"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password"
+      }
+    },
+    "numberOfInstances": {
+      "type": "int",
+      "minValue": 1,
+      "maxValue": 100
+    },
+    "OS": {
+      "type": "string",
+      "allowedValues": [
+        "Windows",
+        "Ubuntu"
+      ],
+      "metadata": {
+        "description": "OS Platform for the VM"
+      }
+    },
+    "SizeVM": {
+      "type": "string",
+      "metadata": {
+        "description": "VM Size"
+      }
+    },
+    "prefix": {
+      "type": "string",
+      "defaultValue": "covid"
+    },
+    "NSGIP": {
+      "type": "string",
+      "metadata": {
+        "description": "Opening all ports for selected IP"
+      }
+    }
+  },
+  "variables": {
+    "rgID": "[uniqueString(resourceGroup().id)]",
+    "virtualNetworkName": "[concat(parameters('prefix'),'-vnet')]",
+    "subnet1Name": "[concat(parameters('prefix'),'-subnet')]",
+    "addressPrefix": "10.0.0.0/16",
+    "subnet1Prefix": "10.0.0.0/24",
+    "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('virtualNetworkName'),variables('subnet1Name'))]",
+    "Windows": {
+      "publisher": "MicrosoftWindowsServer",
+      "offer": "WindowsServer",
+      "sku": "2019-Datacenter",
+      "version": "latest"
+    },
+    "Ubuntu": {
+      "publisher": "Canonical",
+      "offer": "UbuntuServer",
+      "sku": "16.04-LTS",
+      "version": "latest"
+    },
+    "imageReference": "[variables(parameters('OS'))]",
+
+  },
+  "resources": [
+      {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[concat(variables('virtualNetworkName'),'-nsg')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Project": "COVID19"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "Open-All",
+            "properties": {
+              "description": "Open-All",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "[parameters('NSGIP')]",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",  
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('virtualNetworkName')]",
+      "apiVersion": "2016-03-30",
+      "location": "[resourceGroup().location]",
+	  "tags": {
+        "Project": "COVID19"
+      },
+	  "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/', concat(variables('virtualNetworkName'),'-nsg'))]"
+      ],
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('addressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('subnet1Name')]",
+            "properties": {
+              "addressPrefix": "[variables('subnet1Prefix')]",
+			  "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('virtualNetworkName'),'-nsg'))]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(parameters('prefix'),'-nic', copyindex())]",
+      "apiVersion": "2016-03-30",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "nicLoop",
+        "count": "[parameters('numberOfInstances')]"
+      },
+      "tags": {
+        "Project": "COVID19"
+      },
+      "dependsOn": [
+        "[variables('virtualNetworkName')]",
+        "pipLoop"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('prefix'),'-pip', copyindex()))]"
+              },
+              "subnet": {
+                "id": "[variables('subnet1Ref')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2019-11-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(parameters('prefix'),'-pip', copyindex())]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Project": "COVID19"
+      },
+      "copy": {
+        "name": "pipLoop",
+        "count": "[parameters('numberOfInstances')]"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[concat('a', variables('rgID') ,copyindex())]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[concat(parameters('prefix'),'-vm', copyIndex())]",
+      "apiVersion": "2016-04-30-preview",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "virtualMachineLoop",
+        "count": "[parameters('numberOfInstances')]"
+      },
+      "tags": {
+        "Project": "COVID19"
+      },
+      "dependsOn": [
+        "nicLoop"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('SizeVM')]"
+        },
+        "osProfile": {
+          "computerName": "[concat(parameters('prefix'),'-vm', copyIndex())]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": "[variables('imageReference')]",
+          "osDisk": {
+            "createOption": "FromImage",
+            "name": "[concat(parameters('prefix'),'-vm', copyIndex(),'-diskOS')]"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('prefix'),'-nic', copyindex()))]"
+            }
+          ]
+        }
+      },
+      "resources":[
+        {
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(parameters('prefix'),'-vm', copyIndex(), if(equals('Ubuntu', 'Windows'), '/NvidiaGpuDriverLinux', '/NvidiaGpuDriverWindows'))]",
+          "apiVersion": "2015-06-15",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('prefix'),'-vm', copyIndex())]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.HpcCompute",
+            "type": "[if(equals('Ubuntu', 'Windows'), 'NvidiaGpuDriverLinux', 'NvidiaGpuDriverWindows')]",
+            "typeHandlerVersion": "1.2",
+            "autoUpgradeMinorVersion": true,
+            "settings": {}
+          }
+        }
+      ]
+    }
+  ]
+}
