@@ -2,11 +2,11 @@
 
 If you want to help process data on COVID19, you can deploy this template on your subscription and take the next steps from the page. This template is only intended to help you implement a set of processing machines. More info here: https://foldingathome.org/covid19/
 
-The template is building in the loop of resources:
+The template is building in the loop resources:
 1. VM
-2. Managed disk
+2. OS managed disk
 3. VNET (one)
-4. Nic
+4. Nic interface
 5. Pubic IP
 6. NSG (one for VNET)
 
