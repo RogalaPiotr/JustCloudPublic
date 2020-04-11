@@ -32,7 +32,7 @@
     "SizeVM": {
       "type": "string",
       "metadata": {
-        "description": "VM Size"
+        "description": "VM Size with GPU: Standard_NC6_Promo"
       }
     },
     "prefix": {
