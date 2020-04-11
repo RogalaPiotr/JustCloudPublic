@@ -219,7 +219,7 @@
       "resources":[
         {
           "type": "Microsoft.Compute/virtualMachines/extensions",
-          "name": "[concat(parameters('prefix'),'-vm', copyIndex(), if(equals('Ubuntu', 'Windows'), '/NvidiaGpuDriverLinux', '/NvidiaGpuDriverWindows'))]",
+          "name": "[concat(parameters('prefix'),'-vm', copyIndex(), if(equals(parameters('OS'), 'Ubuntu'), '/NvidiaGpuDriverLinux', '/NvidiaGpuDriverWindows'))]",
           "apiVersion": "2015-06-15",
           "location": "[resourceGroup().location]",
           "dependsOn": [
@@ -227,7 +227,7 @@
           ],
           "properties": {
             "publisher": "Microsoft.HpcCompute",
-            "type": "[if(equals('Ubuntu', 'Windows'), 'NvidiaGpuDriverLinux', 'NvidiaGpuDriverWindows')]",
+            "type": "[if(equals(parameters('OS'), 'Ubuntu'), 'NvidiaGpuDriverLinux', 'NvidiaGpuDriverWindows')]",
             "typeHandlerVersion": "1.2",
             "autoUpgradeMinorVersion": true,
             "settings": {}

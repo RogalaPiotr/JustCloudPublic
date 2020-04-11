@@ -15,7 +15,7 @@ Resources:
 ## Create a covid-deployment-nc-vms
 
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FRogalaPiotr%2FJustCloudPublic%2Fmaster%2Fcovid-deployment-nc-vms%2Fcovid-azuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FRogalaPiotr%2FJustCloudPublic%2Fmaster%2Fcovid-deployment-nc-vms%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 <a href="http://armviz.io/#/?load=https://raw.githubusercontent.com/RogalaPiotr/JustCloudPublic/master/covid-deployment-nc-vms/azuredeploy.json" target="_blank">
@@ -26,7 +26,7 @@ Resources:
 
 ```json
 New-AzResourceGroup -ResourceGroupName covid19 -Location SouthCentralUS
-New-AzResourceGroupDeployment -ResourceGroupName covid19 -TemplateURI "https://raw.githubusercontent.com/RogalaPiotr/JustCloudPublic/master/covid-deployment-nc-vms/covid-azuredeploy.json" TemplateParameterURI "https://raw.githubusercontent.com/RogalaPiotr/JustCloudPublic/master/covid-deployment-nc-vms/covid-azuredeploy.json
+New-AzResourceGroupDeployment -ResourceGroupName covid19 -TemplateURI "https://raw.githubusercontent.com/RogalaPiotr/JustCloudPublic/master/covid-deployment-nc-vms/azuredeploy.json" -adminUsername XXX -adminPassword XXX -numberOfInstances XXX -OS Ubuntu -SizeVM Standard_NC6_Promo
 ```
 
 ## Made by
