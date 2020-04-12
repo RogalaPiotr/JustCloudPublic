@@ -33,7 +33,12 @@
       "type": "string",
       "metadata": {
         "description": "VM Size with GPU: Standard_NC6_Promo"
-      }
+      },
+      "allowedValues": [
+        "Standard_NV6",
+        "Standard_NV12",
+        "Standard_NV24"
+      ]
     },
     "prefix": {
       "type": "string",

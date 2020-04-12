@@ -15,7 +15,7 @@
             "value": "Ubuntu"
         },
         "SizeVM": {
-            "value": "Standard_NC6_Promo"
+            "value": "Standard_NV6"
         },
         "NSGIP": {
             "value": null
