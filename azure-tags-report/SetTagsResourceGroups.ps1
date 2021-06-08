@@ -41,6 +41,7 @@ process {
         $tmp = (Get-AzContext).Environment.Name -like "AzureCloud" 2>$null
         if ($tmp) {
             Write-Host "You are logged to Azure!" -ForegroundColor Green
+            $null = Select-AzSubscription -Subscription $subId -Tenant $tenantId
         }
         else {
             Write-Host "You have to loggin to Azure!" -ForegroundColor Yellow
