@@ -1,7 +1,27 @@
-# JustCloudPublic
-Here you can find my public stuff based on Microsoft solutions I hope this will help you.
+# JustCloud.pl | Public
 
-## Author
-Piotr Rogala has worked in IT for many years specializing in Microsoft solutions. He has recently focused on automation, and inspired by DevOps solutions, he deploys them on Azure. Apart from that, he is interested in automotive industry and biking. In addition to that, he runs a blog on cloud solutions: https://justcloud.pl
+**Microsoft Azure Expert | Cloud Computing Specialist**
 
-<a href="https://www.buymeacoffee.com/justcloudpl" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+[![Website](https://img.shields.io/badge/Website-web.justcloud.pl-0078D4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://web.justcloud.pl)
+[![Blog](https://img.shields.io/badge/Blog-blog.justcloud.pl-47b5ed?style=for-the-badge&logo=blogger&logoColor=white)](https://blog.justcloud.pl)
+[![RSS](https://img.shields.io/badge/RSS-blog.justcloud.pl-FFA500?style=for-the-badge&logo=rss&logoColor=white)](https://blog.justcloud.pl/rss.xml)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/justcloudpl)
+
+---
+
+| 🇵🇱 **Polski** | 🇬🇧 **English** |
+|----------------|-----------------|
+| **📖 O projekcie** | **📖 About Project** |
+| To repozytorium zawiera publiczne projekty, skrypty i szablony związane z **Microsoft Azure** i technologiami chmurowymi. | This repository contains public projects, scripts, and templates related to **Microsoft Azure** and cloud technologies. |
+| Znajdziesz tutaj przykłady deploymentów, automation scripts oraz gotowe rozwiązania ARM/Bicep/Terraform. | You'll find deployment examples, automation scripts, and ready-to-use ARM/Bicep/Terraform solutions here. |
+
+## 🛠️ Technologies | Technologie
+
+- **Cloud:** Microsoft Azure
+- **IaC:** ARM Templates, Bicep, Terraform
+- **Scripting:** PowerShell, Bash
+- **CI/CD:** GitHub Actions, Azure DevOps
+
+## Autor | Author
+
+Piotr Rogala
